@@ -1,0 +1,126 @@
+module safecrack_pro #(
+    parameter FREQ = 50_000_000 // Parametro para simulação (mudar no testbench)
+)(
+    input  logic clk,
+    input  logic rstn,
+    input  logic [2:0] btn,
+    output logic [8:0] ledg, // 9 leds verdes
+    output logic ledr        // led erro
+);
+
+    // Estados da FSM
+    typedef enum logic [2:0] { 
+        IDLE,   // Espera 1o digito
+        WAIT2,  // Espera 2o digito
+        WAIT3,  // Espera 3o digito
+        ERRO,   // Errou senha
+        ABERTO, // Sucesso
+        RESET   // Estado de transição pra limpar
+    } state_t;
+
+    state_t state, next_state;
+
+    // Sinais internos
+    logic [2:0] btn_prev, btn_edge;
+    logic any_click;
+    
+    // Contadores de tempo
+    localparam int C_3S = FREQ * 3;
+    localparam int C_5S = FREQ * 5;
+    
+    // O contador precisa ter tamanho suficiente pro maior tempo (5s)
+    logic [$clog2(C_5S)-1:0] cnt, next_cnt;
+
+    // --- Detectar borda de descida (botao apertado) ---
+    // Botões da DE2 geralmente são 1 quando soltos e 0 quando apertados.
+    // Aqui detectamos a transição para apertado.
+    always_comb begin
+        btn_edge = ~btn & btn_prev; // Borda de descida
+        any_click = |btn_edge;
+    end
+
+    // Atualiza estado anterior do botao
+    always_ff @(posedge clk or negedge rstn)
+        if(!rstn) btn_prev <= 3'b111; // Reset assume botoes soltos (1)
+        else      btn_prev <= btn;
+
+    // --- Logica Sequencial (Clock) ---
+    always_ff @(posedge clk or negedge rstn) begin
+        if(!rstn) begin
+            state <= IDLE;
+            cnt <= 0;
+        end else begin
+            state <= next_state;
+            cnt <= next_cnt;
+        end
+    end
+
+    // --- Maquina de Estados ---
+    always_comb begin
+        next_state = state;
+        next_cnt = cnt;
+
+        case(state)
+            IDLE: begin
+                next_cnt = 0;
+                if(btn_edge[0]) next_state = WAIT2;      // Botao 0 correto
+                else if(any_click) next_state = ERRO;    // Outro botao = erro
+            end
+
+            WAIT2: begin
+                if(btn_edge[1]) next_state = WAIT3;      // Botao 1 correto
+                else if(any_click) next_state = ERRO;
+            end
+
+            WAIT3: begin
+                if(btn_edge[2]) begin                    // Botao 2 correto
+                    next_state = ABERTO;
+                    next_cnt = 0;
+                end 
+                else if(any_click) next_state = ERRO;
+            end
+
+            ERRO: begin
+                // Conta ate 3 segundos
+                if(cnt >= C_3S) begin
+                    next_state = RESET;
+                    next_cnt = 0;
+                end else begin
+                    next_cnt = cnt + 1;
+                end
+            end
+
+            ABERTO: begin
+                // Conta ate 5 segundos
+                if(cnt >= C_5S) begin
+                    next_state = RESET;
+                    next_cnt = 0;
+                end else begin
+                    next_cnt = cnt + 1;
+                end
+            end
+
+            RESET: begin
+                next_state = IDLE;
+            end
+
+            default: next_state = IDLE;
+        endcase
+    end
+
+    // --- Saidas (LEDs) ---
+    always_comb begin
+        ledg = 9'd0;
+        ledr = 1'b0;
+
+        case(state)
+            IDLE:   ledg = 9'b000_000_001; // 1 led
+            WAIT2:  ledg = 9'b000_000_011; // 2 leds
+            WAIT3:  ledg = 9'b000_000_111; // 3 leds
+            ABERTO: ledg = 9'b111_111_111; // Todos leds
+            ERRO:   ledr = 1'b1;           // Led vermelho
+            default: ;
+        endcase
+    end
+
+endmodule
