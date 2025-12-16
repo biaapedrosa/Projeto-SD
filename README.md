@@ -1,10 +1,12 @@
 # Projeto-SD
 🔐 SafeCrack Pro – FSM para Cofre Digital (DE2-115)
+
 Projeto desenvolvido para a disciplina de Sistemas Digitais, com o objetivo de evoluir o SafeCrack FSM apresentado em sala de aula.
 O sistema foi implementado em SystemVerilog, utilizando uma Máquina de Estados Finitos (FSM) para controlar um cofre digital com feedback visual por LEDs.
 
 
 👩‍💻 Integrantes
+
 Beatriz Pandolfi Maroja
 Beatriz Freitas Souza Pedrosa
 Luísa Bispo Lócio
