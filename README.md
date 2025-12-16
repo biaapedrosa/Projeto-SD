@@ -55,7 +55,13 @@ Todo o controle é feito por uma **FSM sincronizada por clock**.
 
 # 🔁 Máquina de Estados Finitos (FSM)
 
-O diagrama de estados foi desenvolvido manualmente pelas integrantes do grupo e guiou toda a implementação do projeto.
+O diagrama de estados foi desenvolvido manualmente pelas integrantes do grupo e guiou toda a implementação do projeto.  
+
+![Diagrama de estados](imagens/diagramadeestados.jfif)
+
+Aqui também está o pin planner do nosso projeto.
+
+![Pin Planner](imagens/pinplanner.png)
 
 ---
 
