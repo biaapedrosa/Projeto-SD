@@ -1,13 +1,23 @@
 # Projeto-SD
+🔐 SafeCrack Pro – FSM para Cofre Digital (DE2-115)
+
+Projeto desenvolvido para a disciplina de Sistemas Digitais, com o objetivo de evoluir o SafeCrack FSM apresentado em sala de aula.
+O sistema foi implementado em SystemVerilog, utilizando uma Máquina de Estados Finitos (FSM) para controlar um cofre digital com feedback visual por LEDs.
 
 🔐 **SafeCrack Pro – FSM para Cofre Digital (DE2-115)**  
 
 Projeto desenvolvido para a disciplina de **Sistemas Digitais**, com o objetivo de evoluir o *SafeCrack FSM* apresentado em sala de aula.  
 O sistema foi implementado em **SystemVerilog**, utilizando uma **Máquina de Estados Finitos (FSM)** para controlar um cofre digital com feedback visual por LEDs.
+👩‍💻 Integrantes
+
+Beatriz Pandolfi Maroja
+Beatriz Freitas Souza Pedrosa
+Luísa Bispo Lócio
+Marina Cabral Nogueira Lima
 
 ---
 
-## 👩‍💻 Integrantes
+# 👩‍💻 Integrantes
 
 - Beatriz Pandolfi Maroja  
 - Beatriz Freitas Souza Pedrosa  
@@ -16,7 +26,7 @@ O sistema foi implementado em **SystemVerilog**, utilizando uma **Máquina de Es
 
 ---
 
-## 🎯 Objetivo
+# 🎯 Objetivo
 
 Implementar um cofre digital que:
 
@@ -28,7 +38,7 @@ Implementar um cofre digital que:
 
 ---
 
-## 🧠 Descrição do Sistema
+# 🧠 Descrição do Sistema
 
 O **SafeCrack Pro** funciona a partir da pressão de três botões físicos, que representam os três dígitos da senha.
 
@@ -44,7 +54,7 @@ Todo o controle é feito por uma **FSM sincronizada por clock**.
 
 ---
 
-## 💡 Feedback Visual (LEDs)
+# 💡 Feedback Visual (LEDs)
 
 - 🟢 **1 LED verde** → aguardando o primeiro dígito  
 - 🟢🟢 **2 LEDs verdes** → aguardando o segundo dígito  
@@ -54,13 +64,13 @@ Todo o controle é feito por uma **FSM sincronizada por clock**.
 
 ---
 
-## 🔁 Máquina de Estados Finitos (FSM)
+# 🔁 Máquina de Estados Finitos (FSM)
 
 O diagrama de estados foi desenvolvido manualmente pelas integrantes do grupo e guiou toda a implementação do projeto.
 
 ---
 
-## 🧩 Entradas e Saídas
+# 🧩 Entradas e Saídas
 
 - Botões físicos representam os dígitos da senha  
 - LEDs verdes indicam o progresso da verificação  
@@ -69,7 +79,7 @@ O diagrama de estados foi desenvolvido manualmente pelas integrantes do grupo e 
 
 ---
 
-## 🐞 Possíveis Bugs (Known Issues)
+# 🐞 Possíveis Bugs (Known Issues)
 
 - Botões “tremem” (*bounce*), podendo gerar múltiplos pulsos indesejados  
 - Pressionar dois botões ao mesmo tempo pode gerar comportamento indefinido  
