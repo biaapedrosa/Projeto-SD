@@ -69,8 +69,7 @@ O diagrama de estados foi desenvolvido manualmente pelas integrantes do grupo e 
 ---
 
 # 🐞 Possíveis Bugs (Known Issues)
-
-- Botões “tremem” (*bounce*), podendo gerar múltiplos pulsos indesejados  
+ 
 - Pressionar dois botões ao mesmo tempo pode gerar comportamento indefinido  
 - Botões são ignorados durante os períodos de 3s (erro) e 5s (sucesso)  
 - A temporização depende do clock utilizado  

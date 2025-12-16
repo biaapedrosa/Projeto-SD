@@ -1,4 +1,4 @@
-module safecrack_pro #(
+module safecrack_fsm #(
     parameter FREQ = 50_000_000 // Parametro para simulação (mudar no testbench)
 )(
     input  logic clk,
@@ -10,9 +10,9 @@ module safecrack_pro #(
 
     // Estados da FSM
     typedef enum logic [2:0] { 
-        IDLE,   // Espera 1o digito
-        WAIT2,  // Espera 2o digito
-        WAIT3,  // Espera 3o digito
+        IDLE,   // Espera primeiro digito
+        WAIT2,  // Espera segundo digito
+        WAIT3,  // Espera terceiro digito
         ERRO,   // Errou senha
         ABERTO, // Sucesso
         RESET   // Estado de transição pra limpar
@@ -31,7 +31,7 @@ module safecrack_pro #(
     // O contador precisa ter tamanho suficiente pro maior tempo (5s)
     logic [$clog2(C_5S)-1:0] cnt, next_cnt;
 
-    // --- Detectar borda de descida (botao apertado) ---
+    // Detectar borda de descida (botao apertado)
     // Botões da DE2 geralmente são 1 quando soltos e 0 quando apertados.
     // Aqui detectamos a transição para apertado.
     always_comb begin
@@ -44,7 +44,7 @@ module safecrack_pro #(
         if(!rstn) btn_prev <= 3'b111; // Reset assume botoes soltos (1)
         else      btn_prev <= btn;
 
-    // --- Logica Sequencial (Clock) ---
+    // Clock
     always_ff @(posedge clk or negedge rstn) begin
         if(!rstn) begin
             state <= IDLE;
@@ -55,7 +55,7 @@ module safecrack_pro #(
         end
     end
 
-    // --- Maquina de Estados ---
+    // Maquina de Estados
     always_comb begin
         next_state = state;
         next_cnt = cnt;
@@ -108,7 +108,7 @@ module safecrack_pro #(
         endcase
     end
 
-    // --- Saidas (LEDs) ---
+    // Saidas (LEDs) 
     always_comb begin
         ledg = 9'd0;
         ledr = 1'b0;
